@@ -1,8 +1,10 @@
 # Помощник РП команд
 
-![Academic Logo](Academic.png)
+<div align="center">
+  <img src="Academic.png" alt="SCP Foundation Logo" width="120" height="120">
+  <p><strong>SECURE ACCESS MANAGEMENT SYSTEM • FOUNDATION DATABASE</strong></p>
+</div>
 
-Лёгкое веб-приложение для быстрого создания RP-шаблонов команд на RelaxRP.
 
 ## Описание
 
