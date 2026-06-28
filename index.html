@@ -1,0 +1,693 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Помощник РП команд</title>
+    <link rel="icon" type="image/x-icon" href="Academic.png">
+    <style>
+        :root {
+            --bg-color: #070314;
+            --purple-dark: #0f0726;
+            --purple-light: #5b21b6;
+            --purple-neon: #a855f7;
+            --text-color: #f3f4f6;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glass-glow: rgba(168, 85, 247, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            background-image: 
+                radial-gradient(circle at 30% 20%, rgba(109, 40, 217, 0.12) 0%, transparent 40%),
+                radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.08) 0%, transparent 40%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        header h1 {
+            font-size: 2.2rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #fff 40%, var(--purple-neon) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.3);
+        }
+
+        header p {
+            color: #9ca3af;
+            font-size: 0.95rem;
+        }
+
+        /* Controls Panel */
+        .controls {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            padding: 1rem 1.5rem;
+            border-radius: 14px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            animation: fadeIn 0.8s ease;
+        }
+
+        .categories {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+            flex: 1;
+        }
+
+        .category-btn {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--glass-border);
+            color: #9ca3af;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+        }
+
+        .category-btn:hover, .category-btn.active {
+            background: var(--purple-light);
+            color: white;
+            border-color: var(--purple-neon);
+            box-shadow: 0 0 12px rgba(109, 40, 217, 0.5);
+        }
+
+        .category-btn.disabled-btn {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .category-btn.disabled-btn:hover {
+            background: rgba(255, 255, 255, 0.04);
+            color: #6b7280;
+            border-color: var(--glass-border);
+            box-shadow: none;
+        }
+
+        .clear-btn {
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            color: #f87171;
+            padding: 0.7rem 1.2rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.25s ease;
+        }
+
+        .clear-btn:hover {
+            background: #ef4444;
+            color: white;
+            box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .clear-card-btn {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #d1d5db;
+            padding: 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            flex: 1 1 140px;
+            min-width: 140px;
+        }
+
+        .copy-btn {
+            flex: 1 1 140px;
+            min-width: 140px;
+        }
+
+        .clear-card-btn:hover {
+            background: rgba(248, 113, 113, 0.14);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.25);
+        }
+
+        /* Grid & Divider */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .section-divider {
+            grid-column: 1 / -1;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.5rem 0;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section-divider::before, .section-divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, rgba(168,85,247,0), rgba(168,85,247,0.5), rgba(168,85,247,0));
+        }
+
+        .section-divider span {
+            color: var(--purple-neon);
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+        }
+
+        /* Card */
+        .card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 1rem;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(15px);
+            animation: cardAppear 0.4s forwards ease;
+        }
+
+        .card:hover {
+            border-color: rgba(168, 85, 247, 0.4);
+            box-shadow: 0 8px 24px var(--glass-glow);
+            transform: translateY(-2px);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .card-icon {
+            font-size: 1.4rem;
+            background: rgba(168, 85, 247, 0.08);
+            padding: 0.4rem 0.6rem;
+            border-radius: 8px;
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            flex-shrink: 0;
+        }
+
+        .card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #fff;
+            line-height: 1.4;
+            word-wrap: break-word;
+        }
+
+        .card-body {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            flex-grow: 1;
+            justify-content: flex-end;
+        }
+
+        .inputs-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .dynamic-input {
+            width: 100%;
+            padding: 0.6rem 0.8rem;
+            background: rgba(0, 0, 0, 0.25);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: white;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .dynamic-input:focus {
+            outline: none;
+            border-color: var(--purple-neon);
+        }
+
+        .dynamic-input.error {
+            border-color: #ef4444;
+            box-shadow: 0 0 6px rgba(239, 68, 68, 0.2);
+        }
+
+        .command-preview {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 0.8rem;
+            border-radius: 6px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 0.9rem;
+            color: #c084fc;
+            border-left: 3px solid var(--purple-light);
+            word-break: break-word;
+            line-height: 1.4;
+            height: auto;
+            min-height: 40px;
+        }
+
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            margin-top: auto;
+        }
+
+        .copy-btn,
+        .clear-card-btn {
+            flex: 1 1 140px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 140px;
+        }
+
+        .copy-btn {
+            background: var(--purple-light);
+            color: white;
+            border: none;
+            padding: 0.7rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s ease;
+        }
+
+        .copy-btn:hover {
+            background: #7c3aed;
+            box-shadow: 0 0 12px rgba(168, 85, 247, 0.4);
+        }
+
+        .copy-btn:disabled {
+            background: rgba(255, 255, 255, 0.05);
+            color: #6b7280;
+            cursor: not-allowed;
+            box-shadow: none;
+            border: 1px solid var(--glass-border);
+        }
+
+        .app-footer {
+            margin-top: 2rem;
+            text-align: center;
+            color: #9ca3af;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .app-footer a {
+            color: #c084fc;
+            text-decoration: none;
+        }
+
+        .app-footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: linear-gradient(135deg, var(--purple-light), var(--purple-dark));
+            border: 1px solid var(--purple-neon);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.15), opacity 0.2s ease;
+            z-index: 1000;
+            font-size: 0.95rem;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes cardAppear { to { opacity: 1; transform: translateY(0); } }
+
+        @media (max-width: 600px) {
+            .controls { flex-direction: column; align-items: stretch; }
+            .clear-btn { width: 100%; text-align: center; }
+            .grid { grid-template-columns: 1fr; }
+            .toast { left: 1rem; right: 1rem; bottom: 1rem; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>Помощник РП команд</h1>
+        </header>
+
+        <div class="controls">
+            <div class="categories" id="categoriesContainer"></div>
+            <button class="clear-btn" id="clearAllBtn">✨ Стереть всё</button>
+        </div>
+
+        <div class="grid" id="templatesGrid"></div>
+
+        <footer class="app-footer">
+            <p>Данное приложение не является официальным продуктом RelaxRP. Оно было создано сторонним разработчиком <a href="https://discord.com/users/534028333982285842" target="_blank" rel="noopener noreferrer">Academic (@academic_as)</a>.</p>
+        </footer>
+    </div>
+
+    <div class="toast" id="toast">
+        <span id="toastIcon">✅</span>
+        <span id="toastText">Скопировано!</span>
+    </div>
+
+    <script>
+        const templates = [
+            // СТАТУСЫ (Отображаются сверху)
+            { id: 8, cat: 'scp239', group: 'Статусы', icon: '🚪', title: 'Убрать дверь', template: '/rp Пожелала что бы дверь исчезла.' },
+            { id: 9, cat: 'scp239', group: 'Статусы', icon: '🔓', title: 'Покинула КС', template: '/rp SCP-239-RX покинула КС' },
+            { id: 10, cat: 'scp239', group: 'Статусы', icon: '🔒', title: 'Вернулась в КС', template: '/rp SCP-239-RX вернулась в КС' },
+            { id: 11, cat: 'scp239', group: 'Статусы', icon: '🚨', title: 'Покинула КМ', template: '/rp SCP-239-RX покинула КМ' },
+            { id: 12, cat: 'scp239', group: 'Статусы', icon: '🛡️', title: 'Вернулась в КМ', template: '/rp SCP-239-RX вернулась в КМ' },
+
+            // ЖЕЛАНИЯ (Отображаются снизу)
+            { id: 1, cat: 'scp239', group: 'Желания', icon: '✨', title: 'Новый друг', template: '/rp Новый друг - ***', placeholders: ['Имя нового друга'] },
+            { id: 2, cat: 'scp239', group: 'Желания', icon: '🙏', title: 'Воскрешение друга', template: '/rp пожелала что бы друг воскрес и оказался перед ней' },
+            { id: 3, cat: 'scp239', group: 'Желания', icon: '🏃‍♀️', title: 'Призыв друга', template: '/rp пожелала что бы друг оказался перед ней' },
+            { id: 4, cat: 'scp239', group: 'Желания', icon: '❤️', title: 'Исцеление друга', template: '/rp пожелала что бы друг излечился' },
+            { id: 5, cat: 'scp239', group: 'Желания', icon: '🛡️', title: 'Угроза (Удаление)', template: '/rp Пожелала чтобы плохой человек исчез (нанес вред (урон), оскорбил, подошел близко, наставил оружие)' },
+            { id: 6, cat: 'scp239', group: 'Желания', icon: '⚔️', title: 'Обезоружить врага', template: '/rp Искренне пожелала, чтобы *** больше не наводил на нее оружие, отняв у него половину жизни', placeholders: ['Имя обидчика'] },
+            { id: 7, cat: 'scp239', group: 'Желания', icon: '🪪', title: 'Пожелать Карту Достура', template: '/rp Увидела у *** *** УД и пожелала такой же\n(после написать в репорты что бы выдали)', placeholders: ['Имя владельца', 'Номер/тип УД'] },
+            
+            // SCP-953
+            { id: 13, cat: 'scp953', group: 'Статусы', icon: '🚪', title: '953: Покинула КС', template: '/rp SCP-953 покинула КС' },
+            { id: 14, cat: 'scp953', group: 'Статусы', icon: '🚪', title: '953-2: Покинула КС', template: '/rp SCP-953-2 покинула КС' },
+            { id: 15, cat: 'scp953', group: 'Статусы', icon: '🏠', title: '953: Вернулась в КС', template: '/rp SCP-953 вернулась в КС' },
+            { id: 16, cat: 'scp953', group: 'Статусы', icon: '🏠', title: '953-2: Вернулась в КС', template: '/rp SCP-953-2 вернулась в КС' },
+            { id: 17, cat: 'scp953', group: 'Статусы', icon: '🚨', title: '953: Покинула КМ', template: '/rp SCP-953 покинула КМ' },
+            { id: 18, cat: 'scp953', group: 'Статусы', icon: '🚨', title: '953-2: Покинула КМ', template: '/rp SCP-953-2 покинула КМ' },
+            { id: 19, cat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953: Вернулась в КМ', template: '/rp SCP-953 вернулась в КМ' },
+            { id: 20, cat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953-2: Вернулась в КМ', template: '/rp SCP-953-2 вернулась в КМ' },
+            { id: 21, cat: 'scp953', group: 'Контракты', icon: '📜', title: '953: Контракт', template: '/rp SCP-953 Взяла контракт, подписала контракт, вернула контракт' },
+            { id: 22, cat: 'scp953', group: 'Контракты', icon: '📜', title: '953-2: Контракт', template: '/rp SCP-953-2 Взяла контракт, подписала контракт, вернула контракт' },
+            { id: 23, cat: 'scp953', group: 'Работа', icon: '💼', title: '953: Работа на КМ', template: '/rp SCP-953 работает на КМ' },
+            { id: 24, cat: 'scp953', group: 'Работа', icon: '💼', title: '953-2: Работа на КМ', template: '/rp SCP-953-2 работает на КМ' },
+            { id: 25, cat: 'scp953', group: 'Работа', icon: '🔪', title: '953: Работа на ДЗ', template: '/rp SCP-953 работает на ДЗ' },
+            { id: 26, cat: 'scp953', group: 'Работа', icon: '🔪', title: '953-2: Работа на ДЗ', template: '/rp SCP-953-2 работает на ДЗ' },
+            { id: 27, cat: 'scp953', group: 'Снаряжение', icon: '🎒', title: 'Снаряжение', template: '/rp Взяла 4 УД и рацию' },
+            { id: 28, cat: 'scp953', group: 'Действия', icon: '🩸', title: 'Жестокое действие', template: '/me вырвала печень из Класс-Д и съела её' }
+        ];
+
+        // Вкладки
+        const categoriesData = {
+            scp239: 'SCP-239-RX',
+            scp953: 'SCP-953',
+            soon: 'Скоро будет...'
+        };
+
+        let currentCategory = 'scp239';
+        const userInputs = {}; 
+
+        const grid = document.getElementById('templatesGrid');
+        const categoriesContainer = document.getElementById('categoriesContainer');
+        const clearAllBtn = document.getElementById('clearAllBtn');
+        const toast = document.getElementById('toast');
+
+        function renderCategories() {
+            categoriesContainer.innerHTML = '';
+            Object.entries(categoriesData).forEach(([key, label]) => {
+                const btn = document.createElement('button');
+                if (key === 'soon') {
+                    btn.className = 'category-btn disabled-btn';
+                    btn.disabled = true;
+                } else {
+                    btn.className = `category-btn ${currentCategory === key ? 'active' : ''}`;
+                    btn.onclick = () => {
+                        currentCategory = key;
+                        renderCategories();
+                        renderTemplates();
+                    };
+                }
+                btn.textContent = label;
+                categoriesContainer.appendChild(btn);
+            });
+        }
+
+        function parseTemplate(text) {
+            return text.split('***');
+        }
+
+        function renderTemplates() {
+            grid.innerHTML = '';
+            
+            const filtered = templates.filter(t => t.cat === currentCategory);
+            let currentGroup = '';
+
+            filtered.forEach((item, index) => {
+                if (item.group && item.group !== currentGroup) {
+                    currentGroup = item.group;
+                    const divider = document.createElement('div');
+                    divider.className = 'section-divider';
+                    divider.innerHTML = `<span>${currentGroup}</span>`;
+                    grid.appendChild(divider);
+                }
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.style.animationDelay = `${index * 0.03}s`;
+
+                const parts = parseTemplate(item.template);
+                const inputCount = parts.length - 1;
+
+                let inputsHTML = '';
+                if (inputCount > 0) {
+                    inputsHTML = `<div class="inputs-container">`;
+                    for (let i = 0; i < inputCount; i++) {
+                        const inputKey = `${item.id}-${i}`;
+                        const value = userInputs[inputKey] || '';
+                        const placeholderText = item.placeholders && item.placeholders[i] ? item.placeholders[i] : 'Введите текст';
+                    inputsHTML += `
+                            <input type="text" class="dynamic-input" 
+                                placeholder="${placeholderText}" 
+                                data-card-id="${item.id}" 
+                                data-input-idx="${i}" 
+                                value="${value}">
+                        `;
+                    }
+                    inputsHTML += `</div>`;
+                }
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-icon">${item.icon}</span>
+                        <span class="card-title">${item.title}</span>
+                    </div>
+                    <div class="card-body">
+                        ${inputsHTML}
+                        <div class="command-preview" id="preview-${item.id}"></div>
+                        <div class="card-actions">
+                            <button class="copy-btn" id="btn-${item.id}">📋 Копировать</button>
+                            ${inputCount > 0 ? `<button class="clear-card-btn" data-card-id="${item.id}">🧹 Стереть</button>` : ''}
+                        </div>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+                updateCardState(item.id);
+            });
+
+            document.querySelectorAll('.dynamic-input').forEach(input => {
+                input.addEventListener('input', handleInputChange);
+            });
+
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', handleCopyClick);
+            });
+
+            document.querySelectorAll('.clear-card-btn').forEach(btn => {
+                btn.addEventListener('click', handleClearCardClick);
+            });
+        }
+
+        function updateCardState(id) {
+            const item = templates.find(t => t.id === id);
+            if (!item) return;
+
+            const parts = parseTemplate(item.template);
+            const inputCount = parts.length - 1;
+            
+            let finalOutput = '';
+            let hasEmptyFields = false;
+
+            for (let i = 0; i < parts.length; i++) {
+                finalOutput += parts[i];
+                if (i < inputCount) {
+                    const val = userInputs[`${id}-${i}`] || '';
+                    if (!val.trim()) {
+                        hasEmptyFields = true;
+                        finalOutput += '***';
+                    } else {
+                        finalOutput += val;
+                    }
+                }
+            }
+
+            const previewEl = document.getElementById(`preview-${id}`);
+            const btnEl = document.getElementById(`btn-${id}`);
+            
+            if (previewEl) previewEl.innerText = finalOutput;
+            if (btnEl) btnEl.disabled = hasEmptyFields;
+        }
+
+        function handleInputChange(e) {
+            const cardId = parseInt(e.target.dataset.cardId);
+            const idx = e.target.dataset.inputIdx;
+            const value = e.target.value;
+
+            userInputs[`${cardId}-${idx}`] = value;
+            if (value.trim()) e.target.classList.remove('error');
+            updateCardState(cardId);
+        }
+
+        function handleCopyClick(e) {
+            const btn = e.currentTarget;
+            const cardId = parseInt(btn.id.replace('btn-', ''));
+            const item = templates.find(t => t.id === cardId);
+            
+            const parts = parseTemplate(item.template);
+            let finalOutput = '';
+            let hasError = false;
+
+            for (let i = 0; i < parts.length; i++) {
+                finalOutput += parts[i];
+                if (i < parts.length - 1) {
+                    const inputEl = document.querySelector(`.dynamic-input[data-card-id="${cardId}"][data-input-idx="${i}"]`);
+                    const val = userInputs[`${cardId}-${i}`] || '';
+                    if (!val.trim()) {
+                        hasError = true;
+                        if (inputEl) inputEl.classList.add('error');
+                    } else {
+                        finalOutput += val;
+                    }
+                }
+            }
+
+            if (hasError) {
+                showToast('❌ Заполните пустые поля!', '❌');
+                return;
+            }
+
+            navigator.clipboard.writeText(finalOutput).then(() => {
+                showToast('Текст успешно скопирован!', '✅');
+            }).catch(() => {
+                showToast('Ошибка при копировании', '❌');
+            });
+        }
+
+        let toastTimeout;
+        function showToast(text, icon) {
+            clearTimeout(toastTimeout);
+            document.getElementById('toastIcon').innerText = icon;
+            document.getElementById('toastText').innerText = text;
+            toast.classList.add('show');
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2500);
+        }
+
+        function handleClearCardClick(e) {
+            const cardId = parseInt(e.currentTarget.dataset.cardId);
+            templates.filter(t => t.id === cardId).forEach(item => {
+                const parts = parseTemplate(item.template);
+                const inputCount = parts.length - 1;
+                for (let i = 0; i < inputCount; i++) {
+                    const key = `${cardId}-${i}`;
+                    delete userInputs[key];
+                }
+            });
+
+            document.querySelectorAll(`.dynamic-input[data-card-id="${cardId}"]`).forEach(input => {
+                input.value = '';
+                input.classList.remove('error');
+            });
+            updateCardState(cardId);
+            showToast('Поля этой карточки очищены!', '✨');
+        }
+
+        clearAllBtn.addEventListener('click', () => {
+            Object.keys(userInputs).forEach(key => delete userInputs[key]);
+            document.querySelectorAll('.dynamic-input').forEach(input => {
+                input.value = '';
+                input.classList.remove('error');
+            });
+            templates.forEach(t => updateCardState(t.id));
+            showToast('Все поля очищены!', '✨');
+        });
+
+        renderCategories();
+        renderTemplates();
+    </script>
+</body>
+</html>
