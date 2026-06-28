@@ -24,7 +24,7 @@
 [](https://github.com/Academic-as/SCP-SL-KEYCARD-GENERATOR#-%D0%BA%D0%B0%D0%BA-%D0%B7%D0%B0%D0%BF%D1%83%D1%81%D1%82%D0%B8%D1%82%D1%8C)
 Генератор развернут и доступен прямо в браузере. Вам не нужно ничего скачивать или устанавливать:
 
-👉 **[Открыть Генератор Ключ-Карт](тут будет ссылка)**
+👉 **[Открыть](https://academic-as.github.io/Assistant-RP-teams-RelaxRP/)**
 
 ## Лицензия
 
