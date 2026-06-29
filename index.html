@@ -439,7 +439,7 @@
             { id: 4, cat: 'scp239', group: 'Желания', icon: '❤️', title: 'Исцеление друга', template: '/rp пожелала что бы друг излечился' },
             { id: 5, cat: 'scp239', group: 'Желания', icon: '🛡️', title: 'Угроза (Удаление)', template: '/rp Пожелала чтобы плохой человек исчез (нанес вред (урон), оскорбил, подошел близко, наставил оружие)' },
             { id: 6, cat: 'scp239', group: 'Желания', icon: '⚔️', title: 'Обезоружить врага', template: '/rp Искренне пожелала, чтобы *** больше не наводил на нее оружие, отняв у него половину жизни', placeholders: ['Имя обидчика'] },
-            { id: 7, cat: 'scp239', group: 'Желания', icon: '🪪', title: 'Пожелать Карту Достура', template: '/rp Увидела у *** *** УД и пожелала такой же\n(после написать в репорты что бы выдали)', placeholders: ['Имя владельца', 'Номер/тип УД'] },
+            { id: 7, cat: 'scp239', group: 'Желания', icon: '🪪', title: 'Пожелать Карту Достура', template: '/rp Увидела у *** *** УД и пожелала такой же', note: '(после написать в репорты что бы выдали)', placeholders: ['Имя владельца', 'Номер/тип УД'] },
             
             // SCP-953
             { id: 13, cat: 'scp953', group: 'Статусы', icon: '🚪', title: '953: Покинула КС', template: '/rp SCP-953 покинула КС' },
@@ -597,7 +597,7 @@
             const previewEl = document.getElementById(`preview-${id}`);
             const btnEl = document.getElementById(`btn-${id}`);
             
-            if (previewEl) previewEl.innerText = finalOutput;
+            if (previewEl) previewEl.innerText = finalOutput + (item.note ? ' ' + item.note : '');
             if (btnEl) btnEl.disabled = hasEmptyFields;
         }
 
