@@ -66,49 +66,86 @@
 
         /* Controls Panel */
         .controls {
-            background: var(--glass-bg);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--glass-border);
-            padding: 1rem 1.5rem;
-            border-radius: 14px;
+            background: rgba(15, 7, 38, 0.92);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
+            border: 1px solid rgba(168, 85, 247, 0.15);
+            padding: 1.1rem 1.4rem;
+            border-radius: 20px;
             display: flex;
-            flex-wrap: wrap;
-            align-items: center;
+            flex-direction: column;
+            align-items: stretch;
             gap: 1rem;
             margin-bottom: 2rem;
-            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.25);
             animation: fadeIn 0.8s ease;
+        }
+
+        .control-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .category-groups {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 18px;
+            padding: 0.85rem;
         }
 
         .categories {
             display: flex;
-            gap: 0.6rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
-            flex: 1;
+            align-items: center;
+        }
+
+        .subcategories {
+            padding: 0.15rem 0.25rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
         }
 
         .category-btn {
             background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--glass-border);
-            color: #9ca3af;
-            padding: 0.7rem 1.2rem;
-            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #cbd5e1;
+            padding: 0.75rem 1.15rem;
+            border-radius: 999px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.25s ease;
+            font-weight: 700;
+            font-size: 0.92rem;
+            letter-spacing: 0.02em;
+            transition: all 0.22s ease;
+            min-height: 40px;
+            white-space: nowrap;
         }
 
-        .category-btn:hover, .category-btn.active {
-            background: var(--purple-light);
+        .category-btn:hover {
+            background: rgba(168, 85, 247, 0.15);
+            border-color: rgba(168, 85, 247, 0.35);
             color: white;
-            border-color: var(--purple-neon);
-            box-shadow: 0 0 12px rgba(109, 40, 217, 0.5);
+            transform: translateY(-1px);
+        }
+
+        .category-btn.active {
+            background: linear-gradient(135deg, rgba(107, 33, 168, 0.95), rgba(168, 85, 247, 0.95));
+            color: #ffffff;
+            border-color: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 12px 28px rgba(134, 68, 255, 0.18);
+            transform: none;
         }
 
         .category-btn.disabled-btn {
-            opacity: 0.4;
+            opacity: 0.35;
             cursor: not-allowed;
         }
         .category-btn.disabled-btn:hover {
@@ -119,15 +156,16 @@
         }
 
         .clear-btn {
-            background: rgba(239, 68, 68, 0.08);
-            border: 1px solid rgba(239, 68, 68, 0.15);
-            color: #f87171;
-            padding: 0.7rem 1.2rem;
-            border-radius: 8px;
+            background: rgba(239, 68, 68, 0.12);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            color: #fbcfe8;
+            padding: 0.75rem 1.3rem;
+            border-radius: 999px;
             cursor: pointer;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: all 0.25s ease;
+            font-weight: 700;
+            font-size: 0.95rem;
+            min-width: 140px;
+            transition: all 0.22s ease;
         }
 
         .clear-btn:hover {
@@ -261,7 +299,8 @@
             gap: 0.5rem;
         }
 
-        .dynamic-input {
+        .dynamic-input,
+        .dynamic-input select {
             width: 100%;
             padding: 0.6rem 0.8rem;
             background: rgba(0, 0, 0, 0.25);
@@ -272,7 +311,26 @@
             transition: all 0.2s ease;
         }
 
-        .dynamic-input:focus {
+        .dynamic-input select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            background: rgba(255, 255, 255, 0.06);
+            color: #f3f4f6;
+            background-image: linear-gradient(45deg, transparent 50%, #fff 50%), linear-gradient(135deg, #fff 50%, transparent 50%);
+            background-position: calc(100% - 20px) calc(50% - 4px), calc(100% - 15px) calc(50% - 4px);
+            background-size: 6px 6px, 6px 6px;
+            background-repeat: no-repeat;
+            border-color: rgba(255,255,255,0.12);
+        }
+
+        .dynamic-input select option {
+            background: rgba(15, 7, 38, 0.95);
+            color: #f3f4f6;
+        }
+
+        .dynamic-input:focus,
+        .dynamic-input select:focus {
             outline: none;
             border-color: var(--purple-neon);
         }
@@ -407,8 +465,13 @@
         </header>
 
         <div class="controls">
-            <div class="categories" id="categoriesContainer"></div>
+            <div class="control-top">
+            <div class="category-groups">
+                <div class="categories" id="categoriesContainer"></div>
+                <div class="categories subcategories" id="subcategoriesContainer"></div>
+            </div>
             <button class="clear-btn" id="clearAllBtn">✨ Стереть всё</button>
+        </div>
         </div>
 
         <div class="grid" id="templatesGrid"></div>
@@ -426,48 +489,52 @@
     <script>
         const templates = [
             // СТАТУСЫ (Отображаются сверху)
-            { id: 8, cat: 'scp239', group: 'Статусы', icon: '🚪', title: 'Убрать дверь', template: '/rp Пожелала что бы дверь исчезла.' },
-            { id: 9, cat: 'scp239', group: 'Статусы', icon: '🔓', title: 'Покинула КС', template: '/rp SCP-239-RX покинула КС' },
-            { id: 10, cat: 'scp239', group: 'Статусы', icon: '🔒', title: 'Вернулась в КС', template: '/rp SCP-239-RX вернулась в КС' },
-            { id: 11, cat: 'scp239', group: 'Статусы', icon: '🚨', title: 'Покинула КМ', template: '/rp SCP-239-RX покинула КМ' },
-            { id: 12, cat: 'scp239', group: 'Статусы', icon: '🛡️', title: 'Вернулась в КМ', template: '/rp SCP-239-RX вернулась в КМ' },
+            { id: 8, cat: 'scp', subcat: 'scp239', group: 'Статусы', icon: '🚪', title: 'Убрать дверь', template: '/rp Пожелала, чтобы дверь исчезла.' },
+            { id: 9, cat: 'scp', subcat: 'scp239', group: 'Статусы', icon: '🔓', title: 'Покинула КС', template: '/rp SCP-239-RX покинула КС' },
+            { id: 10, cat: 'scp', subcat: 'scp239', group: 'Статусы', icon: '🔒', title: 'Вернулась в КС', template: '/rp SCP-239-RX вернулась в КС' },
+            { id: 11, cat: 'scp', subcat: 'scp239', group: 'Статусы', icon: '🚨', title: 'Покинула КМ', template: '/rp SCP-239-RX покинула КМ' },
+            { id: 12, cat: 'scp', subcat: 'scp239', group: 'Статусы', icon: '🛡️', title: 'Вернулась в КМ', template: '/rp SCP-239-RX вернулась в КМ' },
 
             // ЖЕЛАНИЯ (Отображаются снизу)
-            { id: 1, cat: 'scp239', group: 'Желания', icon: '✨', title: 'Новый друг', template: '/rp Новый друг - ***', placeholders: ['Имя нового друга'] },
-            { id: 2, cat: 'scp239', group: 'Желания', icon: '🙏', title: 'Воскрешение друга', template: '/rp пожелала что бы друг воскрес и оказался перед ней' },
-            { id: 3, cat: 'scp239', group: 'Желания', icon: '🏃‍♀️', title: 'Призыв друга', template: '/rp пожелала что бы друг оказался перед ней' },
-            { id: 4, cat: 'scp239', group: 'Желания', icon: '❤️', title: 'Исцеление друга', template: '/rp пожелала что бы друг излечился' },
-            { id: 5, cat: 'scp239', group: 'Желания', icon: '🛡️', title: 'Угроза (Удаление)', template: '/rp Пожелала чтобы плохой человек исчез (нанес вред (урон), оскорбил, подошел близко, наставил оружие)' },
-            { id: 6, cat: 'scp239', group: 'Желания', icon: '⚔️', title: 'Обезоружить врага', template: '/rp Искренне пожелала, чтобы *** больше не наводил на нее оружие, отняв у него половину жизни', placeholders: ['Имя обидчика'] },
-            { id: 7, cat: 'scp239', group: 'Желания', icon: '🪪', title: 'Пожелать Карту Достура', template: '/rp Увидела у *** *** УД и пожелала такой же', note: '(после написать в репорты что бы выдали)', placeholders: ['Имя владельца', 'Номер/тип УД'] },
+            { id: 1, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '✨', title: 'Новый друг', template: '/rp Обрела нового друга - «***».', placeholders: ['Имя нового друга'] },
+            { id: 2, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🙏', title: 'Воскрешение друга', template: '/rp Пожелала, чтобы друг воскрес, а затем оказался перед ней.' },
+            { id: 3, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🏃‍♀️', title: 'Призыв друга', template: '/rp Пожелала, чтобы друг появился перед ней.' },
+            { id: 4, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '❤️', title: 'Исцеление друга', template: '/rp Пожелала, чтобы друг излечился.' },
+            { id: 5, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🛡️', title: 'Угроза (Удаление)', template: '/rp Загадала, чтобы тот злодей исчез (ведь он нанес вред (урон), оскорбил, подошел вплотную и наставил оружие).' },
+            { id: 6, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '⚔️', title: 'Обезоружить врага', template: '/rp Пожелала, чтобы «***» больше никогда не наводил на неё оружие, и в наказание отняла у него половину жизни', placeholders: ['Имя обидчика'] },
+            { id: 7, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🪪', title: 'Пожелать Карту Достура', template: '/rp Увидев у «***» - «***» УД, пожелала себе такую же.', note: '(после написать в репорты что бы выдали)', placeholders: ['Имя владельца', 'Номер/тип УД'] },
             
             // SCP-953
-            { id: 13, cat: 'scp953', group: 'Статусы', icon: '🚪', title: '953: Покинула КС', template: '/rp SCP-953 покинула КС' },
-            { id: 14, cat: 'scp953', group: 'Статусы', icon: '🚪', title: '953-2: Покинула КС', template: '/rp SCP-953-2 покинула КС' },
-            { id: 15, cat: 'scp953', group: 'Статусы', icon: '🏠', title: '953: Вернулась в КС', template: '/rp SCP-953 вернулась в КС' },
-            { id: 16, cat: 'scp953', group: 'Статусы', icon: '🏠', title: '953-2: Вернулась в КС', template: '/rp SCP-953-2 вернулась в КС' },
-            { id: 17, cat: 'scp953', group: 'Статусы', icon: '🚨', title: '953: Покинула КМ', template: '/rp SCP-953 покинула КМ' },
-            { id: 18, cat: 'scp953', group: 'Статусы', icon: '🚨', title: '953-2: Покинула КМ', template: '/rp SCP-953-2 покинула КМ' },
-            { id: 19, cat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953: Вернулась в КМ', template: '/rp SCP-953 вернулась в КМ' },
-            { id: 20, cat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953-2: Вернулась в КМ', template: '/rp SCP-953-2 вернулась в КМ' },
-            { id: 21, cat: 'scp953', group: 'Контракты', icon: '📜', title: '953: Контракт', template: '/rp SCP-953 Взяла контракт, подписала контракт, вернула контракт' },
-            { id: 22, cat: 'scp953', group: 'Контракты', icon: '📜', title: '953-2: Контракт', template: '/rp SCP-953-2 Взяла контракт, подписала контракт, вернула контракт' },
-            { id: 23, cat: 'scp953', group: 'Работа', icon: '💼', title: '953: Работа на КМ', template: '/rp SCP-953 работает на КМ' },
-            { id: 24, cat: 'scp953', group: 'Работа', icon: '💼', title: '953-2: Работа на КМ', template: '/rp SCP-953-2 работает на КМ' },
-            { id: 25, cat: 'scp953', group: 'Работа', icon: '🔪', title: '953: Работа на ДЗ', template: '/rp SCP-953 работает на ДЗ' },
-            { id: 26, cat: 'scp953', group: 'Работа', icon: '🔪', title: '953-2: Работа на ДЗ', template: '/rp SCP-953-2 работает на ДЗ' },
-            { id: 27, cat: 'scp953', group: 'Снаряжение', icon: '🎒', title: 'Снаряжение', template: '/rp Взяла 4 УД и рацию' },
-            { id: 28, cat: 'scp953', group: 'Действия', icon: '🩸', title: 'Жестокое действие', template: '/me вырвала печень из Класс-Д и съела её' }
+            { id: 13, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚪', title: '953: Покинула КС', template: '/rp SCP-953 покинула КС' },
+            { id: 14, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚪', title: '953-2: Покинула КС', template: '/rp SCP-953-2 покинула КС' },
+            { id: 15, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🏠', title: '953: Вернулась в КС', template: '/rp SCP-953 вернулась в КС' },
+            { id: 16, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🏠', title: '953-2: Вернулась в КС', template: '/rp SCP-953-2 вернулась в КС' },
+            { id: 17, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚨', title: '953: Покинула КМ', template: '/rp SCP-953 покинула КМ' },
+            { id: 18, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚨', title: '953-2: Покинула КМ', template: '/rp SCP-953-2 покинула КМ' },
+            { id: 19, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953: Вернулась в КМ', template: '/rp SCP-953 вернулась в КМ' },
+            { id: 20, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953-2: Вернулась в КМ', template: '/rp SCP-953-2 вернулась в КМ' },
+            { id: 21, cat: 'scp', subcat: 'scp953', group: 'Контракты', icon: '📜', title: '953: Контракт', template: '/rp SCP-953 взяла контракт, подписала его и вернула.' },
+            { id: 22, cat: 'scp', subcat: 'scp953', group: 'Контракты', icon: '📜', title: '953-2: Контракт', template: '/rp SCP-953-2 взяла контракт, подписала его и вернула.' },
+            { id: 23, cat: 'scp', subcat: 'scp953', group: 'Работа', icon: '💼', title: '953ъ: Работа', template: '/rp SCP-953-2 работает на «***»', placeholders: ['Фракция'], inputTypes: ['select'], options: [['ДЗ','КМ']] },
+            { id: 24, cat: 'scp', subcat: 'scp953', group: 'Работа', icon: '💼', title: '953-2: Работа', template: '/rp SCP-953-2 работает на «***»', placeholders: ['Фракция'], inputTypes: ['select'], options: [['ДЗ','КМ']] },
+            { id: 26, cat: 'scp', subcat: 'scp953', group: 'Снаряжение', icon: '🎒', title: 'Снаряжение', template: '/rp Взяла 4 УД и рацию.' },
+            { id: 27, cat: 'scp', subcat: 'scp953', group: 'Действия', icon: '🩸', title: 'Жестокое действие', template: '/me Молниеносно вырвала печень из груди сотрудника Класса-D и с нескрываемым удовольствием съела её.' }
         ];
 
         // Вкладки
         const categoriesData = {
-            scp239: 'SCP-239-RX',
-            scp953: 'SCP-953',
-            soon: 'Скоро будет...'
+            people: 'Люди',
+            scp: 'SCP-объекты'
         };
 
-        let currentCategory = 'scp239';
+        const scpSubcategories = {
+            scp239: 'SCP-239',
+            scp953: 'SCP-953',
+            newSCPs: 'Скоро будет...'
+        };
+
+        let currentCategory = 'scp';
+        let currentSubcategory = 'scp239';
         const userInputs = {}; 
 
         const grid = document.getElementById('templatesGrid');
@@ -487,11 +554,32 @@
                     btn.onclick = () => {
                         currentCategory = key;
                         renderCategories();
+                        renderSubcategories();
                         renderTemplates();
                     };
                 }
                 btn.textContent = label;
                 categoriesContainer.appendChild(btn);
+            });
+            renderSubcategories();
+        }
+
+        function renderSubcategories() {
+            const subcategoriesContainer = document.getElementById('subcategoriesContainer');
+            subcategoriesContainer.innerHTML = '';
+
+            if (currentCategory !== 'scp') return;
+
+            Object.entries(scpSubcategories).forEach(([key, label]) => {
+                const btn = document.createElement('button');
+                btn.className = `category-btn ${currentSubcategory === key ? 'active' : ''}`;
+                btn.onclick = () => {
+                    currentSubcategory = key;
+                    renderSubcategories();
+                    renderTemplates();
+                };
+                btn.textContent = label;
+                subcategoriesContainer.appendChild(btn);
             });
         }
 
@@ -502,7 +590,7 @@
         function renderTemplates() {
             grid.innerHTML = '';
             
-            const filtered = templates.filter(t => t.cat === currentCategory);
+            const filtered = templates.filter(t => t.cat === currentCategory && (currentCategory !== 'scp' || t.subcat === currentSubcategory));
             let currentGroup = '';
 
             filtered.forEach((item, index) => {
@@ -528,13 +616,26 @@
                         const inputKey = `${item.id}-${i}`;
                         const value = userInputs[inputKey] || '';
                         const placeholderText = item.placeholders && item.placeholders[i] ? item.placeholders[i] : 'Введите текст';
-                    inputsHTML += `
-                            <input type="text" class="dynamic-input" 
-                                placeholder="${placeholderText}" 
-                                data-card-id="${item.id}" 
-                                data-input-idx="${i}" 
-                                value="${value}">
-                        `;
+                        const inputType = item.inputTypes && item.inputTypes[i] ? item.inputTypes[i] : 'text';
+
+                        if (inputType === 'select' && item.options && item.options[i]) {
+                            inputsHTML += `
+                                <select class="dynamic-input" data-card-id="${item.id}" data-input-idx="${i}">
+                                    <option value="" disabled ${value ? '' : 'selected'}>${placeholderText}</option>
+                                    ${item.options[i].map(option => `
+                                        <option value="${option}" ${value === option ? 'selected' : ''}>${option}</option>
+                                    `).join('')}
+                                </select>
+                            `;
+                        } else {
+                            inputsHTML += `
+                                <input type="text" class="dynamic-input"
+                                    placeholder="${placeholderText}"
+                                    data-card-id="${item.id}"
+                                    data-input-idx="${i}"
+                                    value="${value}">
+                            `;
+                        }
                     }
                     inputsHTML += `</div>`;
                 }
