@@ -84,64 +84,93 @@
         .control-top {
             display: flex;
             justify-content: space-between;
-            align-items: stretch;
+            align-items: center;
             flex-wrap: wrap;
             gap: 1rem;
         }
 
         .category-groups {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 0.9rem;
+            width: 100%;
+            padding: 0.15rem;
+        }
+
+        .category-group {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
-            width: 100%;
-            background: rgba(255, 255, 255, 0.03);
+            gap: 0.6rem;
+            background: rgba(255, 255, 255, 0.04);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 18px;
-            padding: 0.85rem;
+            border-radius: 20px;
+            padding: 0.9rem;
+        }
+
+        .group-title {
+            color: #d8b4fe;
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.14em;
         }
 
         .categories {
             display: flex;
-            gap: 0.5rem;
+            gap: 0.55rem;
             flex-wrap: wrap;
             align-items: center;
         }
 
         .subcategories {
-            padding: 0.15rem 0.25rem;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.02);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            padding: 0.75rem;
+        }
+
+        @media (min-width: 800px) {
+            .category-groups {
+                grid-template-columns: minmax(220px, 1fr) minmax(240px, 2fr);
+            }
         }
 
         .category-btn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #cbd5e1;
-            padding: 0.75rem 1.15rem;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #d1d5db;
+            padding: 0.75rem 1rem;
             border-radius: 999px;
             cursor: pointer;
             font-weight: 700;
-            font-size: 0.92rem;
+            font-size: 0.91rem;
             letter-spacing: 0.02em;
-            transition: all 0.22s ease;
+            transition: transform 0.22s ease, background-color 0.22s ease, border-color 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
             min-height: 40px;
             white-space: nowrap;
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.02);
         }
 
         .category-btn:hover {
-            background: rgba(168, 85, 247, 0.15);
+            background: rgba(168, 85, 247, 0.16);
             border-color: rgba(168, 85, 247, 0.35);
-            color: white;
+            color: #f8fafc;
             transform: translateY(-1px);
         }
 
         .category-btn.active {
-            background: linear-gradient(135deg, rgba(107, 33, 168, 0.95), rgba(168, 85, 247, 0.95));
+            background: linear-gradient(135deg, rgba(107, 33, 168, 0.96), rgba(168, 85, 247, 0.96));
             color: #ffffff;
-            border-color: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 12px 28px rgba(134, 68, 255, 0.18);
-            transform: none;
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 14px 30px rgba(108, 43, 186, 0.18);
+            transform: translateY(0);
+        }
+
+        .category-btn.disabled-btn {
+            opacity: 0.45;
+            cursor: not-allowed;
+            background: rgba(255, 255, 255, 0.02);
+            border-color: rgba(255, 255, 255, 0.06);
+            color: #94a3b8;
         }
 
         .category-btn.disabled-btn {
@@ -156,22 +185,29 @@
         }
 
         .clear-btn {
-            background: rgba(239, 68, 68, 0.12);
-            border: 1px solid rgba(239, 68, 68, 0.2);
-            color: #fbcfe8;
-            padding: 0.75rem 1.3rem;
+            background: rgba(168, 85, 247, 0.18);
+            border: 1px solid rgba(168, 85, 247, 0.28);
+            color: #f5f3ff;
+            padding: 0.9rem 1.4rem;
             border-radius: 999px;
             cursor: pointer;
             font-weight: 700;
             font-size: 0.95rem;
-            min-width: 140px;
-            transition: all 0.22s ease;
+            min-width: 165px;
+            transition: background-color 0.22s ease, transform 0.22s ease, box-shadow 0.22s ease;
+            box-shadow: 0 10px 24px rgba(107, 33, 168, 0.1);
         }
 
         .clear-btn:hover {
-            background: #ef4444;
-            color: white;
-            box-shadow: 0 0 12px rgba(239, 68, 68, 0.3);
+            background: linear-gradient(135deg, rgba(168, 85, 247, 0.95), rgba(99, 102, 241, 0.95));
+            color: #ffffff;
+            box-shadow: 0 16px 38px rgba(99, 102, 241, 0.24);
+            transform: translateY(-1px);
+        }
+
+        .clear-btn:focus-visible {
+            outline: 2px solid rgba(192, 132, 252, 0.9);
+            outline-offset: 3px;
         }
 
         .card-actions {
@@ -455,6 +491,40 @@
             .grid { grid-template-columns: 1fr; }
             .toast { left: 1rem; right: 1rem; bottom: 1rem; justify-content: center; }
         }
+        /* Simple SCP profile cards */
+        .scp-profiles {
+            margin-top: 1.6rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+
+        .scp-card {
+            background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+            border: 1px solid rgba(255,255,255,0.05);
+            padding: 1rem;
+            border-radius: 10px;
+            color: var(--text-color);
+        }
+
+        .scp-card h3 { margin-bottom: 0.4rem; font-size: 1.05rem; }
+        .scp-card .meta { color: #9ca3af; font-size: 0.85rem; margin-bottom: 0.6rem; }
+        .scp-card p { color: #d1d5db; font-size: 0.92rem; line-height: 1.3; }
+        .scp-card .card-actions { margin-top: 0.8rem; display:flex; gap:0.6rem; }
+
+        #actionLog {
+            margin-top: 1rem;
+            background: rgba(0,0,0,0.18);
+            border: 1px solid rgba(255,255,255,0.04);
+            padding: 0.8rem;
+            border-radius: 8px;
+            max-height: 160px;
+            overflow: auto;
+            font-family: monospace;
+            color: #c7b3ff;
+        }
+
+        .log-entry { padding: 0.35rem 0.4rem; border-bottom: 1px dashed rgba(255,255,255,0.03); }
     </style>
 </head>
 <body>
@@ -466,12 +536,18 @@
 
         <div class="controls">
             <div class="control-top">
-            <div class="category-groups">
-                <div class="categories" id="categoriesContainer"></div>
-                <div class="categories subcategories" id="subcategoriesContainer"></div>
+                <div class="category-groups">
+                    <div class="category-group">
+                        <div class="group-title">Категории</div>
+                        <div class="categories" id="categoriesContainer"></div>
+                    </div>
+                    <div class="category-group" id="subcategoriesGroup">
+                        <div class="group-title">SCP / Подкатегория</div>
+                        <div class="categories subcategories" id="subcategoriesContainer"></div>
+                    </div>
+                </div>
+                <button class="clear-btn" id="clearAllBtn">✨ Стереть всё</button>
             </div>
-            <button class="clear-btn" id="clearAllBtn">✨ Стереть всё</button>
-        </div>
         </div>
 
         <div class="grid" id="templatesGrid"></div>
@@ -495,30 +571,70 @@
             { id: 11, cat: 'scp', subcat: 'scp239', group: 'Статусы', icon: '🚨', title: 'Покинула КМ', template: '/rp SCP-239-RX покинула КМ' },
             { id: 12, cat: 'scp', subcat: 'scp239', group: 'Статусы', icon: '🛡️', title: 'Вернулась в КМ', template: '/rp SCP-239-RX вернулась в КМ' },
 
-            // ЖЕЛАНИЯ (Отображаются снизу)
-            { id: 1, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '✨', title: 'Новый друг', template: '/rp Обрела нового друга - «***».', placeholders: ['Имя нового друга'] },
-            { id: 2, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🙏', title: 'Воскрешение друга', template: '/rp Пожелала, чтобы друг воскрес, а затем оказался перед ней.' },
+            // ЖЕЛАНИЯ (Отображаются снизу) 
+            { id: 1, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '✨', title: 'Новый друг', variants: [
+                '/rp Обрела нового друга - «Евегений Академиков».',
+                '/rp Обрела нового друга - «Карма Митаке».',
+                '/rp Обрела нового друга - «***».',
+            ], defaultVariant: 2, variantLabels: ['Евегений Академиков','Карма Митаке','Свой вариант'], placeholders: ['Имя нового друга'] },
+            { id: 2, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🙏', title: 'Воскрешение друга', variants: [
+                '/rp Пожелала, чтобы друг излечился.',
+                '/rp Рaскрылa книгу и прoшeптaлa: «Healthy - Пусть бoлезнь oтступит, a друг снoвa стaнет здoрoвым». (Пoжeлaлa, чтoбы друг излeчился).'
+            ]  },
             { id: 3, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🏃‍♀️', title: 'Призыв друга', template: '/rp Пожелала, чтобы друг появился перед ней.' },
-            { id: 4, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '❤️', title: 'Исцеление друга', template: '/rp Пожелала, чтобы друг излечился.' },
-            { id: 5, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🛡️', title: 'Угроза (Удаление)', template: '/rp Загадала, чтобы тот злодей исчез (ведь он нанес вред (урон), оскорбил, подошел вплотную и наставил оружие).' },
+            { id: 4, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '❤️', title: 'Исцеление друга', variants: [
+                '/rp Пожелала, чтобы друг воскрес, а затем оказался перед ней.',
+                '/rp Прoчитaлa в книгe: «Reviviscere - Пусть друг вeрнeтся к жизни и прeдстaнeт прeдo мнoй». (Пoжeлaлa вoскрeшeния другa, a зaтeм чтoбы oкaзaлся пeрeд нeй).'
+            ]  },
+            { id: 5, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🛡️', title: 'Угроза (Удаление)', variants: [
+                '/rp Загадала, чтобы злодей исчез (ведь он нанес вред (урон), оскорбил, подошел вплотную и наставил оружие).',
+                '/rp Прижав книгу, читает: «Да исчезнет злодей, растворясь в небытии». (Нанес вред/оскорбил/подошел/наставил оружие)',
+                '/rp Прочитала в книге: «Resentment - Пусть тoт, ктo причинил мне бoль, исчезнет прямo сейчас» (Нанес вред, oскoрбил, пoдoшел, нaстaвил oружие)'
+            ]  },
             { id: 6, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '⚔️', title: 'Обезоружить врага', template: '/rp Пожелала, чтобы «***» больше никогда не наводил на неё оружие, и в наказание отняла у него половину жизни', placeholders: ['Имя обидчика'] },
             { id: 7, cat: 'scp', subcat: 'scp239', group: 'Желания', icon: '🪪', title: 'Пожелать Карту Достура', template: '/rp Увидев у «***» - «***» УД, пожелала себе такую же.', note: '(после написать в репорты что бы выдали)', placeholders: ['Имя владельца', 'Номер/тип УД'] },
             
             // SCP-953
-            { id: 13, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚪', title: '953: Покинула КС', template: '/rp SCP-953 покинула КС' },
-            { id: 14, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚪', title: '953-2: Покинула КС', template: '/rp SCP-953-2 покинула КС' },
-            { id: 15, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🏠', title: '953: Вернулась в КС', template: '/rp SCP-953 вернулась в КС' },
-            { id: 16, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🏠', title: '953-2: Вернулась в КС', template: '/rp SCP-953-2 вернулась в КС' },
-            { id: 17, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚨', title: '953: Покинула КМ', template: '/rp SCP-953 покинула КМ' },
-            { id: 18, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚨', title: '953-2: Покинула КМ', template: '/rp SCP-953-2 покинула КМ' },
-            { id: 19, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953: Вернулась в КМ', template: '/rp SCP-953 вернулась в КМ' },
-            { id: 20, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953-2: Вернулась в КМ', template: '/rp SCP-953-2 вернулась в КМ' },
-            { id: 21, cat: 'scp', subcat: 'scp953', group: 'Контракты', icon: '📜', title: '953: Контракт', template: '/rp SCP-953 взяла контракт, подписала его и вернула.' },
-            { id: 22, cat: 'scp', subcat: 'scp953', group: 'Контракты', icon: '📜', title: '953-2: Контракт', template: '/rp SCP-953-2 взяла контракт, подписала его и вернула.' },
-            { id: 23, cat: 'scp', subcat: 'scp953', group: 'Работа', icon: '💼', title: '953ъ: Работа', template: '/rp SCP-953-2 работает на «***»', placeholders: ['Фракция'], inputTypes: ['select'], options: [['ДЗ','КМ']] },
-            { id: 24, cat: 'scp', subcat: 'scp953', group: 'Работа', icon: '💼', title: '953-2: Работа', template: '/rp SCP-953-2 работает на «***»', placeholders: ['Фракция'], inputTypes: ['select'], options: [['ДЗ','КМ']] },
-            { id: 26, cat: 'scp', subcat: 'scp953', group: 'Снаряжение', icon: '🎒', title: 'Снаряжение', template: '/rp Взяла 4 УД и рацию.' },
-            { id: 27, cat: 'scp', subcat: 'scp953', group: 'Действия', icon: '🩸', title: 'Жестокое действие', template: '/me Молниеносно вырвала печень из груди сотрудника Класса-D и с нескрываемым удовольствием съела её.' }
+            { id: 13, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚪', title: '953 / 953-2: Покинула КС', variants: [
+                '/rp SCP-953 покинула КС',
+                '/rp SCP-953-2 покинула КС'
+            ], variantLabels: ['953', '953-2'] },
+            { id: 14, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🏠', title: '953 / 953-2: Вернулась в КС', variants: [
+                '/rp SCP-953 вернулась в КС',
+                '/rp SCP-953-2 вернулась в КС'
+            ], variantLabels: ['953', '953-2'] },
+            { id: 15, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🚨', title: '953 / 953-2: Покинула КМ', variants: [
+                '/rp SCP-953 покинула КМ',
+                '/rp SCP-953-2 покинула КМ'
+            ], variantLabels: ['953', '953-2'] },
+            { id: 16, cat: 'scp', subcat: 'scp953', group: 'Статусы', icon: '🛡️', title: '953 / 953-2: Вернулась в КМ', variants: [
+                '/rp SCP-953 вернулась в КМ',
+                '/rp SCP-953-2 вернулась в КМ'
+            ], variantLabels: ['953', '953-2'] },
+            { id: 17, cat: 'scp', subcat: 'scp953', group: 'Контракты / Работа / Снаряжение', icon: '�', title: '953 / 953-2: Контракт', variants: [
+                '/rp SCP-953 взяла контракт, подписала его и вернула.',
+                '/rp SCP-953-2 взяла контракт, подписала его и вернула.'
+            ], variantLabels: ['953: Контракт', '953-2: Контракт'] },
+            { id: 22, cat: 'scp', subcat: 'scp953', group: 'Контракты / Работа / Снаряжение', icon: '💼', title: '953 / 953-2: Работа', variants: [
+                '/rp SCP-953 работает на «***»',
+                '/rp SCP-953-2 работает на «***»'
+            ], variantLabels: ['953: Работа', '953-2: Работа'], placeholders: ['Фракция'], inputTypes: ['select'], options: [['ДЗ','КМ']] },
+            { id: 23, cat: 'scp', subcat: 'scp953', group: 'Контракты / Работа / Снаряжение', icon: '🎒', title: '953 / 953-2: Снаряжение', variants: [
+                '/rp SCP-953 взяла 4 УД и рацию.',
+                '/rp SCP-953-2 взяла 4 УД и рацию.'
+            ], variantLabels: ['953: Снаряжение', '953-2: Снаряжение'] },
+            { id: 27, cat: 'scp', subcat: 'scp953', group: 'Действия', icon: '🩸', title: 'Жестокое действие', variants: [
+                '/me Молниеносно вырвала печень из груди сотрудника Класса-D и с нескрываемым удовольствием съела её.',
+                '/me Вырвала печень из груди сотрудника Класса-D и с нескрываемым удовольствием поглотила её, не отрывая ледяного взгляда от лица умирающего.'
+            ] },
+            { id: 28, cat: 'people', group: 'Действия', icon: '📱', title: 'Показал КПК и картку', variants: [
+                '/me Показал КПК и Карту - «Медика»',
+                '/me Показал КПК и Карту - «Психолога»',
+                '/me Показал КПК и Карту - «СБ»',
+                '/me Показал КПК и Карту - «Старшего СБ»',
+                '/me Показал КПК и Карту - «СПС»',
+                '/me Показал КПК и Карту - «***»'
+            ], defaultVariant: 5, variantLabels: ['Медика','Психолога','СБ','Старшего СБ','СПС','Свой вариант'], placeholders: ['Название роли'] }
         ];
 
         // Вкладки
@@ -565,11 +681,16 @@
         }
 
         function renderSubcategories() {
+            const subcategoriesGroup = document.getElementById('subcategoriesGroup');
             const subcategoriesContainer = document.getElementById('subcategoriesContainer');
             subcategoriesContainer.innerHTML = '';
 
-            if (currentCategory !== 'scp') return;
+            if (currentCategory !== 'scp') {
+                subcategoriesGroup.style.display = 'none';
+                return;
+            }
 
+            subcategoriesGroup.style.display = 'flex';
             Object.entries(scpSubcategories).forEach(([key, label]) => {
                 const btn = document.createElement('button');
                 btn.className = `category-btn ${currentSubcategory === key ? 'active' : ''}`;
@@ -585,6 +706,20 @@
 
         function parseTemplate(text) {
             return text.split('***');
+        }
+
+        function resolveVariantIndex(item) {
+            const variantKey = `${item.id}__variant`;
+            if (typeof userInputs[variantKey] !== 'undefined') {
+                return parseInt(userInputs[variantKey]);
+            }
+            if (typeof item.defaultVariant !== 'undefined') {
+                return item.defaultVariant;
+            }
+            if (item.variantLabels && item.variantLabels[item.variantLabels.length - 1] === 'Свой вариант') {
+                return item.variantLabels.length - 1;
+            }
+            return 0;
         }
 
         function renderTemplates() {
@@ -606,12 +741,14 @@
                 card.className = 'card';
                 card.style.animationDelay = `${index * 0.03}s`;
 
-                const parts = parseTemplate(item.template);
+                // select which template text to use: either `template` or a chosen `variants` entry
+                const selectedVariantIdx = resolveVariantIndex(item);
+                const templateText = item.variants ? (item.variants[selectedVariantIdx] || item.variants[0]) : item.template;
+                const parts = parseTemplate(templateText);
                 const inputCount = parts.length - 1;
 
-                let inputsHTML = '';
+                let inputsHTML = `<div class="inputs-container" id="inputs-${item.id}" style="display: ${inputCount > 0 ? 'grid' : 'none'};">`;
                 if (inputCount > 0) {
-                    inputsHTML = `<div class="inputs-container">`;
                     for (let i = 0; i < inputCount; i++) {
                         const inputKey = `${item.id}-${i}`;
                         const value = userInputs[inputKey] || '';
@@ -637,7 +774,19 @@
                             `;
                         }
                     }
-                    inputsHTML += `</div>`;
+                }
+                inputsHTML += `</div>`;
+
+                // If the template has multiple variants, render a selector above the preview
+                let variantSelectorHTML = '';
+                if (item.variants && item.variants.length > 1) {
+                    variantSelectorHTML = `<div style="display:flex;gap:0.6rem;align-items:center;margin-bottom:0.6rem;">
+                        <select class="variant-select dynamic-input" data-card-id="${item.id}">
+                            ${item.variants.map((v, idx) => `
+                                <option value="${idx}" ${selectedVariantIdx === idx ? 'selected' : ''}>${item.variantLabels && item.variantLabels[idx] ? item.variantLabels[idx] : `Вариант ${idx+1}`}</option>
+                            `).join('')}
+                        </select>
+                    </div>`;
                 }
 
                 card.innerHTML = `
@@ -646,6 +795,7 @@
                         <span class="card-title">${item.title}</span>
                     </div>
                     <div class="card-body">
+                        ${variantSelectorHTML}
                         ${inputsHTML}
                         <div class="command-preview" id="preview-${item.id}"></div>
                         <div class="card-actions">
@@ -659,8 +809,19 @@
                 updateCardState(item.id);
             });
 
-            document.querySelectorAll('.dynamic-input').forEach(input => {
+            // bind only real input fields (those with data-input-idx)
+            document.querySelectorAll('.dynamic-input[data-input-idx]').forEach(input => {
                 input.addEventListener('input', handleInputChange);
+            });
+
+            // variant selector change: update preview and rerender inputs when template structure changes
+            document.querySelectorAll('.variant-select').forEach(sel => {
+                sel.addEventListener('change', (e) => {
+                    const cardId = parseInt(e.target.dataset.cardId);
+                    userInputs[`${cardId}__variant`] = e.target.value;
+                    updateCardInputs(cardId);
+                    updateCardState(cardId);
+                });
             });
 
             document.querySelectorAll('.copy-btn').forEach(btn => {
@@ -676,7 +837,9 @@
             const item = templates.find(t => t.id === id);
             if (!item) return;
 
-            const parts = parseTemplate(item.template);
+            const selectedVariantIdx = resolveVariantIndex(item);
+            const templateText = item.variants ? (item.variants[selectedVariantIdx] || item.variants[0]) : item.template;
+            const parts = parseTemplate(templateText);
             const inputCount = parts.length - 1;
             
             let finalOutput = '';
@@ -702,6 +865,58 @@
             if (btnEl) btnEl.disabled = hasEmptyFields;
         }
 
+        function updateCardInputs(id) {
+            const item = templates.find(t => t.id === id);
+            if (!item) return;
+
+            const selectedVariantIdx = resolveVariantIndex(item);
+            const templateText = item.variants ? (item.variants[selectedVariantIdx] || item.variants[0]) : item.template;
+            const parts = parseTemplate(templateText);
+            const inputCount = parts.length - 1;
+            const inputsContainer = document.getElementById(`inputs-${id}`);
+            if (!inputsContainer) return;
+
+            if (inputCount === 0) {
+                inputsContainer.style.display = 'none';
+                inputsContainer.innerHTML = '';
+                return;
+            }
+
+            inputsContainer.style.display = 'grid';
+            let innerHTML = '';
+
+            for (let i = 0; i < inputCount; i++) {
+                const inputKey = `${item.id}-${i}`;
+                const value = userInputs[inputKey] || '';
+                const placeholderText = item.placeholders && item.placeholders[i] ? item.placeholders[i] : 'Введите текст';
+                const inputType = item.inputTypes && item.inputTypes[i] ? item.inputTypes[i] : 'text';
+
+                if (inputType === 'select' && item.options && item.options[i]) {
+                    innerHTML += `
+                        <select class="dynamic-input" data-card-id="${item.id}" data-input-idx="${i}">
+                            <option value="" disabled ${value ? '' : 'selected'}>${placeholderText}</option>
+                            ${item.options[i].map(option => `
+                                <option value="${option}" ${value === option ? 'selected' : ''}>${option}</option>
+                            `).join('')}
+                        </select>
+                    `;
+                } else {
+                    innerHTML += `
+                        <input type="text" class="dynamic-input"
+                            placeholder="${placeholderText}"
+                            data-card-id="${item.id}"
+                            data-input-idx="${i}"
+                            value="${value}">
+                    `;
+                }
+            }
+
+            inputsContainer.innerHTML = innerHTML;
+            document.querySelectorAll(`#inputs-${id} .dynamic-input[data-input-idx]`).forEach(input => {
+                input.addEventListener('input', handleInputChange);
+            });
+        }
+
         function handleInputChange(e) {
             const cardId = parseInt(e.target.dataset.cardId);
             const idx = e.target.dataset.inputIdx;
@@ -716,8 +931,10 @@
             const btn = e.currentTarget;
             const cardId = parseInt(btn.id.replace('btn-', ''));
             const item = templates.find(t => t.id === cardId);
-            
-            const parts = parseTemplate(item.template);
+            const variantKey = `${cardId}__variant`;
+            const selectedVariantIdx = typeof userInputs[variantKey] !== 'undefined' ? parseInt(userInputs[variantKey]) : 0;
+            const templateText = item.variants ? (item.variants[selectedVariantIdx] || item.variants[0]) : item.template;
+            const parts = parseTemplate(templateText);
             let finalOutput = '';
             let hasError = false;
 
@@ -761,7 +978,10 @@
         function handleClearCardClick(e) {
             const cardId = parseInt(e.currentTarget.dataset.cardId);
             templates.filter(t => t.id === cardId).forEach(item => {
-                const parts = parseTemplate(item.template);
+                const variantKey = `${cardId}__variant`;
+                const selectedVariantIdx = typeof userInputs[variantKey] !== 'undefined' ? parseInt(userInputs[variantKey]) : 0;
+                const templateText = item.variants ? (item.variants[selectedVariantIdx] || item.variants[0]) : item.template;
+                const parts = parseTemplate(templateText);
                 const inputCount = parts.length - 1;
                 for (let i = 0; i < inputCount; i++) {
                     const key = `${cardId}-${i}`;
