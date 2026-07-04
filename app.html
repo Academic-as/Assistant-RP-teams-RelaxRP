@@ -42,6 +42,24 @@
             max-width: 1000px;
         }
 
+        .page-nav {
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #d8b4fe;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s ease;
+        }
+
+        .back-link:hover {
+            color: #f5f3ff;
+        }
+
         /* Header */
         header {
             text-align: center;
@@ -541,8 +559,12 @@
 <body>
 
     <div class="container">
+        <div class="page-nav">
+            <a class="back-link" href="index.html">← На главную</a>
+        </div>
         <header>
             <h1>Помощник РП команд</h1>
+            <p>Удобный инструмент, позволяющий быстро копировать RP-команды в нужном формате.</p>
         </header>
 
         <div class="controls">

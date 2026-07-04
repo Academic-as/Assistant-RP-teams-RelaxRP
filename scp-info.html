@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCP-239 / SCP-953 — Информация</title>
+    <style>
+        :root {
+            --bg: #070314;
+            --panel: #0f0726;
+            --border: rgba(255,255,255,0.12);
+            --text: #f3f4f6;
+            --muted: #9ca3af;
+            --accent: #a855f7;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            padding: 24px 16px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 24px;
+            box-shadow: 0 16px 48px rgba(0,0,0,0.25);
+        }
+
+        .topbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: #d8b4fe;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            color: #f5f3ff;
+        }
+
+        h1 {
+            margin-bottom: 8px;
+            font-size: 1.9rem;
+            color: #fff;
+        }
+
+        .subtitle {
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.7rem;
+            margin-bottom: 18px;
+        }
+
+        .tab-btn {
+            border: 1px solid rgba(255,255,255,0.12);
+            background: rgba(255,255,255,0.04);
+            color: #e5e7eb;
+            padding: 0.7rem 1rem;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent), #7c3aed);
+            color: white;
+            border-color: rgba(255,255,255,0.2);
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .section {
+            margin-bottom: 22px;
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255,255,255,0.03);
+        }
+
+        .section h2 {
+            font-size: 1.15rem;
+            margin-bottom: 10px;
+            color: #d8b4fe;
+        }
+
+        .section p, .section li {
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+
+        ul {
+            padding-left: 20px;
+        }
+
+        .divider {
+            margin: 14px 0;
+            border-top: 1px dashed rgba(255,255,255,0.14);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="topbar">
+            <a class="back-link" href="index.html">← На главную</a>
+        </div>
+
+        <h1>SCP-239 / SCP-953</h1>
+        <p class="subtitle">Сводка правил и особенностей для RP</p>
+
+        <div class="tabs" role="tablist" aria-label="Вкладки SCP">
+            <button class="tab-btn active" data-tab="scp239">SCP-239</button>
+            <button class="tab-btn" data-tab="scp953">SCP-953</button>
+            <button class="tab-btn" data-tab="soon">Скоро будет...</button>
+        </div>
+
+        <section class="tab-panel active" id="scp239-panel">
+            <div class="section">
+                <h2>SCP-239</h2>
+                <p><strong>Может использовать силы на тех, кто:</strong></p>
+                <ul>
+                    <li>нанёс урон</li>
+                    <li>оскорбил</li>
+                    <li>подошёл слишком близко</li>
+                    <li>целенаправленно наставил оружие</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <p>После выполнения запроса делать новый можно через 15 минут.</p>
+                <p>После поимки или прогулки делать новый можно через 10 минут.</p>
+                <div class="divider"></div>
+                <p><strong>Можете запрашивать:</strong></p>
+                <ul>
+                    <li>общение или игру с психологом</li>
+                    <li>человеческую пищу</li>
+                    <li>прогулку по КМ</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <ul>
+                    <li>Избегать скопление 6+ человек</li>
+                    <li>Можете воскресить и телепортивать друга</li>
+                    <li>Ограничение на возрождение друга — 1 раз</li>
+                    <li>Запрещено воскрешать друга во время рейда</li>
+                    <li>Не может применять силы без причины, а также на SCP: 001, 096, 106, 173, 343, 457, 682, 1471.</li>
+                    <li>Все действия со SWEP (убийство и т.п.) нужно отыграть в РП чат (/rp ***).</li>
+                    <li>Открытие дверей и звук отыгрывать не нужно.</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h2>Ловля</h2>
+                <p>Психолог и 2 вооружённых сотрудников без оружия в руках.</p>
+                <p>Психолог должен навязать общение с 239 с /roll.</p>
+                <p>Если нет психолога, ловящий приносит в КС книги о волшебстве, которые можно взять в казарме СБ, затем зовёт 239 читать их в её комнате (без /roll).</p>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="scp953-panel">
+            <div class="section">
+                <h2>SCP-953</h2>
+                <p><strong>F4 → Сделать действие → Ломает дверь КС (до 5)</strong></p>
+                <div class="divider"></div>
+                <p>Можете нападать в случае сильной опасности, оскорбления в вашу сторону.</p>
+                <p>Вы очень надменны над людьми и SCP.</p>
+                <p><strong>Могут атаковать при подписании контракта:</strong></p>
+                <ul>
+                    <li>SCP-166</li>
+                    <li>SCP-035</li>
+                    <li>SCP-076-2</li>
+                    <li>SCP-1820-RX</li>
+                    <li>SCP-1048</li>
+                    <li>SCP-285</li>
+                </ul>
+                <div class="divider"></div>
+                <p><strong>Могут атаковать после подписания контракта:</strong></p>
+                <p><strong>По приказу:</strong></p>
+                <ul>
+                    <li>SCP-082</li>
+                    <li>SCP-1820-RX</li>
+                    <li>SCP-3375</li>
+                    <li>SCP-9221</li>
+                    <li>SCP-035</li>
+                    <li>SCP-076-2</li>
+                    <li>SCP-285-RX</li>
+                    <li>SCP-953</li>
+                    <li>SCP-1048</li>
+                </ul>
+                <p><strong>Без приказа:</strong></p>
+                <ul>
+                    <li>SCP-008</li>
+                    <li>SCP-049-2</li>
+                    <li>SCP-4213-RX-2</li>
+                </ul>
+                <div class="divider"></div>
+                <p>После выполнения запроса делать новый можно через 15 минут.</p>
+                <p>После поимки или прогулки делать новый можно через 10 минут.</p>
+                <div class="divider"></div>
+                <p>РК может предложить подписать контракт с фондом (предлагать самому запрещено).</p>
+                <p>Вы слишком слабы, чтобы ломать гейты.</p>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="soon-panel">
+            <div class="section">
+                <p>Возможно, в будущем здесь что-то и появится, но на данный момент никакой информации - нет. Самостоятельно заниматься этим пока не хочется, поэтому остается только ждать или кто-то возьмется за это.</p>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
+
+                btn.classList.add('active');
+                document.getElementById(`${btn.dataset.tab}-panel`).classList.add('active');
+            });
+        });
+    </script>
+</body>
+</html>
