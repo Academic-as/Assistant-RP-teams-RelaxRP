@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Модельки / Outfitter</title>
+    <link rel="icon" type="image/x-icon" href="Academic.png">
+    <style>
+        :root {
+            --bg: #070314;
+            --panel: rgba(15, 7, 38, 0.94);
+            --text: #f3f4f6;
+            --muted: #9ca3af;
+            --accent: #a855f7;
+            --accent-2: #7c3aed;
+            --line: rgba(255,255,255,0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, sans-serif; }
+
+        body {
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background: radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.2), transparent 30%),
+                        radial-gradient(circle at 85% 15%, rgba(99, 102, 241, 0.14), transparent 24%),
+                        linear-gradient(180deg, #05030f 0%, #090519 100%);
+            color: var(--text);
+            padding: 2rem 1rem;
+        }
+
+        .card {
+            width: min(100%, 920px);
+            background: var(--panel);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 28px;
+            padding: 2rem;
+            box-shadow: 0 36px 90px rgba(0,0,0,0.32);
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .back-link {
+            color: #d8b4fe;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .link {
+            color: #a855f7;
+            text-decoration: underline;
+            text-decoration-color: rgba(168, 85, 247, 0.5);
+        }
+
+        .link:hover {
+            color: #f3f4f6;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        p {
+            color: var(--muted);
+            line-height: 1.75;
+            margin-bottom: 1rem;
+            font-size: 0.98rem;
+            max-width: 860px;
+            padding: 1rem 1.1rem;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 18px;
+        }
+
+        .tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1rem 0 1.2rem;
+        }
+
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            margin: 1rem 0 1.2rem;
+        }
+
+        .tab-btn {
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.05);
+            color: #f3f4f6;
+            padding: 0.7rem 1rem;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            border-color: transparent;
+            box-shadow: 0 10px 24px rgba(124, 58, 237, 0.22);
+        }
+
+        .tab-panel {
+            display: none;
+            background: rgba(255,255,255,0.04);
+            border: 1px solid var(--line);
+            border-radius: 18px;
+            padding: 1.1rem;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        .subtabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 0 0 1rem;
+        }
+
+        .subtab-btn {
+            border: 1px solid var(--line);
+            background: rgba(255,255,255,0.05);
+            color: #f3f4f6;
+            padding: 0.6rem 0.9rem;
+            border-radius: 999px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s ease;
+        }
+
+        .subtab-btn.active {
+            background: rgba(168, 85, 247, 0.22);
+            border-color: rgba(168, 85, 247, 0.45);
+        }
+
+        .subtab-panel {
+            display: none;
+        }
+
+        .subtab-panel.active {
+            display: block;
+        }
+
+        .section-title {
+            font-size: 1.05rem;
+            margin-bottom: 0.7rem;
+            color: #f8f5ff;
+        }
+
+        .item-list {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .card-entry {
+            display: grid;
+            grid-template-columns: 170px 1fr;
+            gap: 1rem;
+            padding: 1rem;
+            border-radius: 18px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            align-items: center;
+        }
+
+        .card-image {
+            min-height: 130px;
+            border-radius: 16px;
+            background-color: rgba(255,255,255,0.05);
+            background-size: cover;
+            background-position: center;
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 0.85rem;
+            color: #f8f5ff;
+            font-weight: 700;
+            text-shadow: 0 0 18px rgba(0,0,0,0.7);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-image::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.55));
+        }
+
+        .card-image span {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            font-size: 0.88rem;
+            line-height: 1.2;
+        }
+
+        .card-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .card-title {
+            font-size: 1.05rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 0.6rem;
+            line-height: 1.2;
+        }
+
+        .nsfw-badge,
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.15rem 0.5rem;
+            border-radius: 999px;
+            white-space: nowrap;
+            line-height: 1;
+        }
+
+        .nsfw-badge {
+            background: rgba(248, 113, 113, 0.18);
+            color: #fda4af;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .verified-badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.15rem 0.55rem;
+            border-radius: 999px;
+            background: rgba(34, 197, 94, 0.18);
+            color: #86efac;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+
+        .verified-badge::before {
+            content: '✔';
+            margin-right: 0.35rem;
+            font-size: 0.9rem;
+            line-height: 1;
+        }
+
+        .card-meta {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+
+        .card-link {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: #fff;
+            text-decoration: none;
+            padding: 0.8rem 1rem;
+            border-radius: 999px;
+            font-weight: 700;
+            max-width: fit-content;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .card-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(124, 58, 237, 0.24);
+        }
+
+        .copy-link-btn {
+            display: inline-block;
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            text-decoration: none;
+            padding: 0.7rem 1rem;
+            border-radius: 999px;
+            border: 1px solid rgba(255,255,255,0.12);
+            font-weight: 700;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+        }
+
+        .copy-link-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: translateY(-1px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+
+        .divider {
+            height: 1px;
+            background: rgba(255,255,255,0.1);
+            margin: 0.8rem 0;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.9rem 1.4rem;
+            border-radius: 999px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 12px 30px rgba(124, 58, 237, 0.25);
+            margin-top: 0.4rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 36px rgba(124, 58, 237, 0.35);
+        }
+    </style>
+</head>
+<body>
+    <main class="card">
+        <div class="topbar">
+            <a class="back-link" href="index.html">← На главную</a>
+        </div>
+        <h1>Модельки / Outfitter</h1>
+        <p>Подборка ссылок на различные модели для быстрого выбора. Сборка сформирована на основе правил, но имейте в виду: я, <a class="link" href="https://discord.com/users/534028333982285842" target="_blank" rel="noopener noreferrer">Academic (@academic_as)</a>, не гарантирую, что за использование этих моделей вам не сделают замечание, не выдадут предупреждение или джайл, а также не забанят. Если вы получили что-то из перечисленного, напишите мне в ЛС Discord и пришлите ссылку на модель, из-за которой это произошло.</p>
+        <p>Маркировка «NSFW (+18)» предупреждает, что в модели есть контент для взрослых. Учтите, что эта отметка информационная: моделька не будет изначально раздета, но указывает на наличие такой возможности.</p>
+        <p>Если у модельки есть зеленая галочка, значит за неё уже бегали и ничего не получали.</p>
+
+        <div class="actions">
+            <a class="btn" href="https://steamcommunity.com/app/4000/workshop/" target="_blank" rel="noopener noreferrer">Открыть мастерскую Steam</a>
+            <button class="btn" id="sortToggle" type="button">Сортировка: больше→меньше</button>
+        </div>
+
+        <div class="tabs" role="tablist" aria-label="Категории модельков">
+            <button class="tab-btn active" data-tab="scp239">SCP-239</button>
+            <button class="tab-btn" data-tab="scp953">SCP-953</button>
+            <button class="tab-btn" data-tab="robot">Роботы</button>
+            <button class="tab-btn" data-tab="people">Люди</button>
+        </div>
+
+        <section class="tab-panel active" id="scp239">
+
+            <div class="item-list">
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/36700717737593231/C872EDC62F478718CD3ADB440B20D41590C23639/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] MAYA Urban Tech Chrome服饰 （重新上传）<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3386438410 · 559 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3386438410" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="item-list">
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/33318782145387005/7EC944E1E0A734CBF1B33D359A55D5D131FD63D2/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">Hololive English - Koseki Bijou NSFW<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3442161651 · 130 МБ</div>
+                        <div class="card-actions">
+                            <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3442161651" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                            <button class="copy-link-btn" type="button" data-link="https://steamcommunity.com/sharedfiles/filedetails/?id=3442161651">Скопировать ссылку</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/11974578970695546175/48E4F9FFF45D32D3BA9D04EC7D25116BD2733A38/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] Ririka Landmine-Vampire 服饰（特别版）<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3490164066 · 445 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3490164066" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/16321200833699763668/C6A1B24F48F5F596B56937590C097D1B80F7E207/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] MOE LetsGoToYouchien服饰X幼化版MOE<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3491300123 · 594 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3491300123" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/14396437928577238229/F124D83FDF84AA2E689CF742B61D30455B52EB3C/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] Milfy GLEIPNIR服饰X幼化版Milfy<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3531721943 · 685 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3531721943" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/11856352825136947040/DE261403C3EEA0C86D1C5145F97D488FA5B1CEA8/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] Plum 原厂服饰X幼化版Plum<span class="nsfw-badge">NSFW (+18)</span><span class="verified-badge">Проверено</span></div>
+                        <div class="card-meta">3637191891 · 590 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3637191891" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/36692794486460225/CDF56D6595C1006B539B08B4761C0FECC36823F3/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] yugi&miyo 原厂服饰(重制版)X幼化版yugi&miyo<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3416396538 · 741 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3416396538" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/36695013471253385/5DB29126A9DE25FBC25F94725DE388300697F623/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] Chocolat Arided服饰X幼化版Chocolat<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3431962140 · 827 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3431962140" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/36694476718196633/9B26017C04C0236AB64B21D52F36CDF716114CAA/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] Chocolat 原厂服饰X幼化版Chocolat+Flight Cap帽子<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3427466199 · 445 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3427466199" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/11683662367823698970/E08A160043B0B034C5BC4F5D6E90AD79E1D2D528/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] Chocolat Pleasure Bunny服饰X幼化版Chocolat<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">3630775848 · 942 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3630775848" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+            </div>
+            <div class="item-list">
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/2506898018888035806/FEFC21113D5869E74A4F1F2D931B6B154A58DFC4/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">Blue Archive - Plana - PM</div>
+                        <div class="card-meta">3280173467 · 40 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3280173467" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/1479947680606224856/57E135E65F9297B78AB1BEC4186A8A1598C1C903/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">Shimotsuki Potofu<span class="nsfw-badge">NSFW (+18)</span></div>
+                        <div class="card-meta">2180720299 · 22 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=2180720299" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/13907614925818640833/70B1F70A9498761A4B92B8BF68EDA546272D671C/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[PM & NPC] Duet Night Abyss ——Truffle</div>
+                        <div class="card-meta">3611539581 · 21 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3611539581" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/2054257543530958307/80CC21EAED1F87324E00DDBBFC7978C4B100EF5C/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">Seirei Gensouki - Celia Claire - PM</div>
+                        <div class="card-meta">3024222062 · 28 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3024222062" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="robot">
+            <div class="subtabs" role="tablist" aria-label="Подгруппы роботов">
+                <button class="subtab-btn active" data-group="robot" data-subtab="operator" type="button">Опрессор</button>
+                <button class="subtab-btn" data-group="robot" data-subtab="military" type="button">Какой-то военный робот</button>
+                <button class="subtab-btn" data-group="robot" data-subtab="scp" type="button">Робот Инженер/ SCP-8612-RX</button>
+            </div>
+
+            <div class="subtab-panel active" id="robot-operator" data-group="robot">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background: linear-gradient(135deg, #374151, #111827);"></div>
+                        <div class="card-info">
+                            <div class="card-title">Opressor</div>
+                            <div class="card-meta">НЕТУ МОДЕЛЬКИ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subtab-panel" id="robot-military" data-group="robot">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background: linear-gradient(135deg, #374151, #111827);"></div>
+                        <div class="card-info">
+                            <div class="card-title">Робот - 2.0.14-77</div>
+                            <div class="card-meta">НЕТУ МОДЕЛЬКИ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subtab-panel" id="robot-scp" data-group="robot">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/2008072820051353345/0938948675D4DBD3ACB747ADE160848B42915F5D/');"></div>
+                        <div class="card-info">
+                            <div class="card-title">(Portal 2) Humanoid GLaDOS</div>
+                            <div class="card-meta">2898487586 · 50 МБ</div>
+                            <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=2898487586" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="people">
+            <div class="subtabs" role="tablist" aria-label="Подгруппы людей">
+                <button class="subtab-btn active" data-group="people" data-subtab="psychologist" type="button">Психолог</button>
+                <button class="subtab-btn" data-group="people" data-subtab="genetic" type="button">Генетик</button>
+                <button class="subtab-btn" data-group="people" data-subtab="medic" type="button">Медик</button>
+                <button class="subtab-btn" data-group="people" data-subtab="janitor" type="button">Уборщик</button>
+                <button class="subtab-btn" data-group="people" data-subtab="engineer" type="button">Инженер</button>
+            </div>
+
+            <div class="subtab-panel active" id="people-psychologist" data-group="people">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/14386241673925064589/F113B77015A36D54B360781760B2B30A199248CB/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true');"></div>
+                        <div class="card-info">
+                            <div class="card-title">【深空之眼】太一·庚辰-代班董事 PM/NPC<span class="verified-badge">Проверено</span></div>
+                            <div class="card-meta">3528598808 · 40 МБ</div>
+                            <a class="card-link" href="https://steamcommunity.com/workshop/filedetails/?id=3528598808" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subtab-panel" id="people-genetic" data-group="people">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/2255801875092480893/1D532B820337D8E991F9525FF6149E9D58E99173/');"></div>
+                        <div class="card-info">
+                            <div class="card-title">Генетик</div>
+                            <div class="card-meta">3038420682 · 32 МБ</div>
+                            <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3038420682" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subtab-panel" id="people-medic" data-group="people">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background: linear-gradient(135deg, #dc2626, #f97316);"></div>
+                        <div class="card-info">
+                            <div class="card-title">Медик</div>
+                            <div class="card-meta">НЕТУ МОДЕЛЬКИ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subtab-panel" id="people-janitor" data-group="people">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background: linear-gradient(135deg, #475569, #64748b);"></div>
+                        <div class="card-info">
+                            <div class="card-title">Уборщик</div>
+                            <div class="card-meta">НЕТУ МОДЕЛЬКИ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="subtab-panel" id="people-engineer" data-group="people">
+                <div class="item-list">
+                    <div class="card-entry">
+                        <div class="card-image" style="background: linear-gradient(135deg, #1d4ed8, #06b6d4);"></div>
+                        <div class="card-info">
+                            <div class="card-title">Инженер</div>
+                            <div class="card-meta">НЕТУ МОДЕЛЬКИ</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tab-panel" id="scp953">
+            <div class="item-list">
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/11856352825136947040/DE261403C3EEA0C86D1C5145F97D488FA5B1CEA8/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRCHAT] Plum 原厂服饰X幼化版Plum<span class="nsfw-badge">NSFW (+18)</span><span class="verified-badge">Проверено</span></div>
+                        <div class="card-meta">3637191891 · 590 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3637191891" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/2503513338718372848/DC4DF7C7EB8EDBFE349E05CDF12B3C6B5D4569B3/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">[VRChat][PM] Kokoa</div>
+                        <div class="card-meta">3221017690 · 64 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3221017690" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/18233430172773014711/77A020E8C0A71B64AE2B2C3D33148E8B7DCB968E/');"></div>
+                    <div class="card-info">
+                        <div class="card-title">【依盖之书】 玉面九尾-望月隐 PM/NPC</div>
+                        <div class="card-meta">3474487032 · 276 МБ</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3474487032" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/10919769686570397383/5D3F3646EB75BDC567D7D82F37F20B0752933495/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true');"></div>
+                    <div class="card-info">
+                        <div class="card-title">Hololive - 白上フブキ Kurokami / Shirakami Fubuki V2 NSFW [PM, Ragdoll, & NPC]</div>
+                        <div class="card-meta">3504325475 · 86</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3504325475" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+                <div class="card-entry">
+                    <div class="card-image" style="background-image:url('https://images.steamusercontent.com/ugc/2472002556699971063/46B681524D484F3C224C881C1B1E0161A6764F48/?imw=268&imh=268&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=true');"></div>
+                    <div class="card-info">
+                        <div class="card-title">(r18) [VRChat] yuikkonu's Lime</div>
+                        <div class="card-meta">3336005467 · 54</div>
+                        <a class="card-link" href="https://steamcommunity.com/sharedfiles/filedetails/?id=3336005467" target="_blank" rel="noopener noreferrer">Открыть ссылку</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const buttons = document.querySelectorAll('.tab-btn');
+        const panels = document.querySelectorAll('.tab-panel');
+        const subButtons = document.querySelectorAll('.subtab-btn');
+        const sortToggle = document.getElementById('sortToggle');
+        let sortDescending = true;
+
+        function parseSize(text) {
+            const sizePart = text.split('·')[1]?.trim() ?? '';
+            if (!sizePart) return 0;
+            const normalized = sizePart.replace(/\s/g, '').replace(',', '.').toUpperCase();
+            if (normalized.includes('ГБ')) {
+                return parseFloat(normalized) * 1024;
+            }
+            return parseFloat(normalized.replace('МБ', '')) || 0;
+        }
+
+        function sortPanel(panel) {
+            if (!panel) return;
+            const activeSubpanel = panel.querySelector('.subtab-panel.active');
+            const root = activeSubpanel || panel;
+            const cards = Array.from(root.querySelectorAll('.card-entry'));
+            if (!cards.length) return;
+            const lists = Array.from(root.querySelectorAll('.item-list'));
+            const targetList = lists[0];
+            if (!targetList) return;
+
+            cards.sort((a, b) => {
+                const sizeA = parseSize(a.querySelector('.card-meta').textContent);
+                const sizeB = parseSize(b.querySelector('.card-meta').textContent);
+                return sortDescending ? sizeB - sizeA : sizeA - sizeB;
+            });
+
+            cards.forEach(card => targetList.appendChild(card));
+            lists.slice(1).forEach(list => list.remove());
+        }
+
+        function updateSortButton() {
+            sortToggle.textContent = sortDescending ? 'Сортировка: больше→меньше' : 'Сортировка: меньше→больше';
+        }
+
+        buttons.forEach(button => {
+            button.addEventListener('click', () => {
+                const target = button.getAttribute('data-tab');
+
+                buttons.forEach(btn => btn.classList.remove('active'));
+                panels.forEach(panel => panel.classList.remove('active'));
+
+                button.classList.add('active');
+                const activePanel = document.getElementById(target);
+                activePanel.classList.add('active');
+                sortPanel(activePanel);
+            });
+        });
+
+        subButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const group = button.getAttribute('data-group');
+                const subtab = button.getAttribute('data-subtab');
+                const parentPanel = button.closest('.tab-panel');
+
+                document.querySelectorAll(`.subtab-btn[data-group="${group}"]`).forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll(`.subtab-panel[data-group="${group}"]`).forEach(panel => panel.classList.remove('active'));
+
+                button.classList.add('active');
+                const activeSubpanel = document.getElementById(`${group}-${subtab}`);
+                if (activeSubpanel) {
+                    activeSubpanel.classList.add('active');
+                }
+                sortPanel(parentPanel);
+            });
+        });
+
+        sortToggle.addEventListener('click', () => {
+            sortDescending = !sortDescending;
+            updateSortButton();
+            const activePanel = document.querySelector('.tab-panel.active');
+            sortPanel(activePanel);
+        });
+
+        function addCopyButtons() {
+            document.querySelectorAll('.card-entry').forEach(card => {
+                const link = card.querySelector('.card-link');
+                if (!link) return;
+
+                let actions = card.querySelector('.card-actions');
+                if (!actions) {
+                    actions = document.createElement('div');
+                    actions.className = 'card-actions';
+                    link.parentNode.appendChild(actions);
+                    actions.appendChild(link);
+                }
+
+                if (!actions.querySelector('.copy-link-btn')) {
+                    const copyBtn = document.createElement('button');
+                    copyBtn.type = 'button';
+                    copyBtn.className = 'copy-link-btn';
+                    copyBtn.textContent = 'Скопировать ссылку';
+                    copyBtn.dataset.link = link.href;
+                    copyBtn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(copyBtn.dataset.link)
+                            .then(() => copyBtn.textContent = 'Скопировано!')
+                            .catch(() => copyBtn.textContent = 'Ошибка');
+                        setTimeout(() => copyBtn.textContent = 'Скопировать ссылку', 1500);
+                    });
+                    actions.appendChild(copyBtn);
+                }
+            });
+        }
+
+        updateSortButton();
+        sortPanel(document.querySelector('.tab-panel.active'));
+        addCopyButtons();
+    </script>
+</body>
+</html>
+
