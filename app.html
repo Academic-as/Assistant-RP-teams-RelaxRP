@@ -997,8 +997,7 @@
             const btn = e.currentTarget;
             const cardId = parseInt(btn.id.replace('btn-', ''));
             const item = templates.find(t => t.id === cardId);
-            const variantKey = `${cardId}__variant`;
-            const selectedVariantIdx = typeof userInputs[variantKey] !== 'undefined' ? parseInt(userInputs[variantKey]) : 0;
+            const selectedVariantIdx = resolveVariantIndex(item);
             const templateText = item.variants ? (item.variants[selectedVariantIdx] || item.variants[0]) : item.template;
             const parts = parseTemplate(templateText);
             let finalOutput = '';
@@ -1044,8 +1043,7 @@
         function handleClearCardClick(e) {
             const cardId = parseInt(e.currentTarget.dataset.cardId);
             templates.filter(t => t.id === cardId).forEach(item => {
-                const variantKey = `${cardId}__variant`;
-                const selectedVariantIdx = typeof userInputs[variantKey] !== 'undefined' ? parseInt(userInputs[variantKey]) : 0;
+                const selectedVariantIdx = resolveVariantIndex(item);
                 const templateText = item.variants ? (item.variants[selectedVariantIdx] || item.variants[0]) : item.template;
                 const parts = parseTemplate(templateText);
                 const inputCount = parts.length - 1;
