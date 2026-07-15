@@ -42,6 +42,26 @@
             max-width: 1000px;
         }
 
+        .notice {
+            width: 100%;
+            max-width: 1000px;
+            margin-bottom: 1rem;
+            padding: 0.95rem 1rem;
+            border: 1px solid rgba(168, 85, 247, 0.25);
+            background: rgba(168, 85, 247, 0.12);
+            border-radius: 16px;
+            color: #f5f3ff;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+
+        .notice strong {
+            display: block;
+            margin-bottom: 0.2rem;
+            color: #fff;
+        }
+
         .page-nav {
             margin-bottom: 1rem;
         }
@@ -554,10 +574,43 @@
             text-align: center;
             font-weight: 600;
         }
+
+        .timer-box {
+            margin-top: 0.65rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            padding: 0.55rem 0.9rem;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #f5e8ff;
+            font-size: 0.95rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .timer-label {
+            color: #c7b3ff;
+        }
+
+        .timer-value {
+            color: #ffffff;
+            font-variant-numeric: tabular-nums;
+        }
     </style>
 </head>
 <body>
-
+    <div class="notice" role="status">
+        <strong>Сайт не будет обновляться.</strong>
+        На момент написания этого сообщения (15.07.2026) информация на сайте актуальна, однако дальнейшие обновления не планируются.<br>
+        Дальнейшая судьба обновлений зависит от одного человека. Если в течение 30 дней (до 14.08.2026) ситуация не изменится, сайт будет удален.<br>
+        <div class="timer-box" role="timer" aria-live="polite">
+            <span class="timer-label">Осталось до удаления:</span>
+            <span class="timer-value" id="countdownTimer">—</span>
+        </div>
+    </div>
     <div class="container">
         <div class="page-nav">
             <a class="back-link" href="index.html">← На главную</a>
@@ -595,6 +648,35 @@
         <span id="toastIcon">✅</span>
         <span id="toastText">Скопировано!</span>
     </div>
+
+    <script>
+        (function () {
+            const targetDate = new Date(2026, 7, 14, 0, 0, 0);
+            const timerEl = document.getElementById('countdownTimer');
+            if (!timerEl) return;
+
+            function updateTimer() {
+                const now = new Date();
+                const diff = targetDate - now;
+
+                if (diff <= 0) {
+                    timerEl.textContent = '0 дн. 00:00:00';
+                    return;
+                }
+
+                const totalSeconds = Math.floor(diff / 1000);
+                const days = Math.floor(totalSeconds / 86400);
+                const hours = Math.floor((totalSeconds % 86400) / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                timerEl.textContent = `${days} дн. ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        })();
+    </script>
 
     <script>
         const templates = [
@@ -680,7 +762,8 @@
                 '/me Показал КПК и Карту - «Старшего СБ»',
                 '/me Показал КПК и Карту - «СПС»',
                 '/me Показал КПК и Карту - «***»'
-            ], defaultVariant: 5, variantLabels: ['Медика','Психолога','СБ','Старшего СБ','СПС','Свой вариант'], placeholders: ['Название роли'] }
+            ], defaultVariant: 5, variantLabels: ['Медика','Психолога','СБ','Старшего СБ','СПС','Свой вариант'], placeholders: ['Название роли'] },
+            { id: 29, cat: 'people', subcat: 'psychologist', group: 'Психолог', icon: '🧠', title: 'Начал разговор с SCP-239-RX', template: '/me начал завадить разговор с SC-239-RX' }
         ];
 
         // Вкладки
@@ -689,11 +772,16 @@
             scp: 'SCP-объекты'
         };
 
-        const scpSubcategories = {
-            scp239: 'SCP-239',
-            scp953: 'SCP-953',
-            scp001: 'SCP-001',
-            newSCPs: 'Скоро будет...'
+        const subcategoriesData = {
+            people: {
+                psychologist: 'Психолог'
+            },
+            scp: {
+                scp239: 'SCP-239',
+                scp953: 'SCP-953',
+                scp001: 'SCP-001',
+                newSCPs: 'Скоро будет...'
+            }
         };
 
         let currentCategory = '';
@@ -716,8 +804,10 @@
                     btn.className = `category-btn ${currentCategory === key ? 'active' : ''}`;
                     btn.onclick = () => {
                         currentCategory = key;
-                        if (key === 'scp') {
-                            currentSubcategory = 'scp239';
+                        if (subcategoriesData[key]) {
+                            currentSubcategory = Object.keys(subcategoriesData[key])[0];
+                        } else {
+                            currentSubcategory = '';
                         }
                         renderCategories();
                         renderSubcategories();
@@ -735,13 +825,13 @@
             const subcategoriesContainer = document.getElementById('subcategoriesContainer');
             subcategoriesContainer.innerHTML = '';
 
-            if (currentCategory !== 'scp') {
+            if (!subcategoriesData[currentCategory]) {
                 subcategoriesGroup.style.display = 'none';
                 return;
             }
 
             subcategoriesGroup.style.display = 'flex';
-            Object.entries(scpSubcategories).forEach(([key, label]) => {
+            Object.entries(subcategoriesData[currentCategory]).forEach(([key, label]) => {
                 const btn = document.createElement('button');
                 btn.className = `category-btn ${currentSubcategory === key ? 'active' : ''}`;
                 btn.onclick = () => {
@@ -791,7 +881,7 @@
                 return;
             }
 
-            const filtered = templates.filter(t => t.cat === currentCategory && (currentCategory !== 'scp' || t.subcat === currentSubcategory));
+            const filtered = templates.filter(t => t.cat === currentCategory && (!subcategoriesData[currentCategory] || t.subcat === currentSubcategory));
             let currentGroup = '';
 
             filtered.forEach((item, index) => {
